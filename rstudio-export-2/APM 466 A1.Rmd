@@ -1,0 +1,272 @@
+---
+title: "APM 466 A1 Code"
+author: "Tong Zhu"
+date: "1/28/2023"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r}
+library(tidyverse)
+#install.packages("jrvFinance")
+library(jrvFinance)
+library(ggplot2)
+
+```
+## 4a)
+
+```{r}
+#Import the data of the ten bonds that I choose
+price <- read.csv("BondsPrice.csv")
+price$coupon_rate <- price$coupon_rate*0.01
+ytm <- matrix(nrow = 10,ncol = 10)
+colnames(ytm)<-c("2023-01-16", "2023-01-17","2023-01-18","2023-01-19","2023-01-20",
+                  "2023-01-23","2023-01-24","2023-01-25","2023-01-26","2023-01-27")
+```
+```{r}
+#Firstly, I used library"jrvFinance" to calculate yield to maturity bond. For each day, I used for loop to calculate the yield to maturity of the ten bonds. 
+#ytm at 2023.01.16
+for (i in 1:10) {
+  coupon_rate = price$coupon_rate[i]
+  bond_value = price$X2023.01.16[i]
+  maturity_date = price$maturity_date[i]
+  ytm_16=bond.yield("2023-01-16", maturity_date, coupon = coupon_rate , freq = 2, bond_value, comp.freq = 2, redemption_value = 100)
+  ytm[i,1] =  ytm_16
+}
+#ytm at 2023.01.17
+for (i in 1:10) {
+  coupon_rate = price$coupon_rate[i]
+  bond_value = price$X2023.01.17[i]
+  maturity_date = price$maturity_date[i]
+  ytm_17=bond.yield("2023-01-17", maturity_date, coupon = coupon_rate , freq = 2, bond_value, comp.freq = 2, redemption_value = 100)
+  ytm[i,2] =  ytm_17
+}
+#ytm at 2023.01.18
+for (i in 1:10) {
+  coupon_rate = price$coupon_rate[i]
+  bond_value = price$X2023.01.18[i]
+  maturity_date = price$maturity_date[i]
+  ytm_18=bond.yield("2023-01-18", maturity_date, coupon = coupon_rate , freq = 2, bond_value, comp.freq = 2, redemption_value = 100)
+  ytm[i,3] =  ytm_18
+}
+#ytm at 2023.01.19
+for (i in 1:10) {
+  coupon_rate = price$coupon_rate[i]
+  bond_value = price$X2023.01.19[i]
+  maturity_date = price$maturity_date[i]
+  ytm_19=bond.yield("2023-01-19", maturity_date, coupon = coupon_rate , freq = 2, bond_value, comp.freq = 2, redemption_value = 100)
+  ytm[i,4] =  ytm_19
+}
+#ytm at 2023.01.20
+for (i in 1:10) {
+  coupon_rate = price$coupon_rate[i]
+  bond_value = price$X2023.01.20[i]
+  maturity_date = price$maturity_date[i]
+  ytm_20=bond.yield("2023-01-20", maturity_date, coupon = coupon_rate , freq = 2, bond_value, comp.freq = 2, redemption_value = 100)
+  ytm[i,5] =  ytm_20
+}
+#ytm at 2023.01.23
+for (i in 1:10) {
+  coupon_rate = price$coupon_rate[i]
+  bond_value = price$X2023.01.23[i]
+  maturity_date = price$maturity_date[i]
+  ytm_23=bond.yield("2023-01-23", maturity_date, coupon = coupon_rate , freq = 2, bond_value, comp.freq = 2, redemption_value = 100)
+  ytm[i,6] =  ytm_23
+}
+#ytm at 2023.01.24
+for (i in 1:10) {
+  coupon_rate = price$coupon_rate[i]
+  bond_value = price$X2023.01.24[i]
+  maturity_date = price$maturity_date[i]
+  ytm_24=bond.yield("2023-01-24", maturity_date, coupon = coupon_rate , freq = 2, bond_value, comp.freq = 2, redemption_value = 100)
+  ytm[i,7] =  ytm_24
+}
+#ytm at 2023.01.25
+for (i in 1:10) {
+  coupon_rate = price$coupon_rate[i]
+  bond_value = price$X2023.01.25[i]
+  maturity_date = price$maturity_date[i]
+  ytm_25=bond.yield("2023-01-25", maturity_date, coupon = coupon_rate , freq = 2, bond_value, comp.freq = 2, redemption_value = 100)
+  ytm[i,8] =  ytm_25
+}
+#ytm at 2023.01.26
+for (i in 1:10) {
+  coupon_rate = price$coupon_rate[i]
+  bond_value = price$X2023.01.26[i]
+  maturity_date = price$maturity_date[i]
+  ytm_26=bond.yield("2023-01-26", maturity_date, coupon = coupon_rate , freq = 2, bond_value, comp.freq = 2, redemption_value = 100)
+  ytm[i,9] =  ytm_26
+}
+#ytm at 2023.01.27
+for (i in 1:10) {
+  coupon_rate = price$coupon_rate[i]
+  bond_value = price$X2023.01.27[i]
+  maturity_date = price$maturity_date[i]
+  ytm_27=bond.yield("2023-01-27", maturity_date, coupon = coupon_rate , freq = 2, bond_value, comp.freq = 2, redemption_value = 100)
+  ytm[i,10] =  ytm_27
+}
+```
+
+
+```{r}
+#plot yield curve
+a <- seq(0.5,5,0.5)
+plot(a,ytm[,1],type="l", col=1,xlab="Time to Maturity (Years)",ylab="Yield to Maturity", 
+     main =" 5-Year Yield Curve for 10 Bonds of 10 Days")
+lines(a,ytm[,2], col=2)
+lines(a,ytm[,3], col=3)
+lines(a,ytm[,4], col=4)
+lines(a,ytm[,5], col=5)
+lines(a,ytm[,6], col=6)
+lines(a,ytm[,7], col=7)
+lines(a,ytm[,8], col=8)
+lines(a,ytm[,9], col=9)
+lines(a,ytm[,10], col=10)
+legend("topright",legend = c("2023-01-16", "2023-01-17","2023-01-18","2023-01-19","2023-01-20",
+                                "2023-01-23","2023-01-24","2023-01-25","2023-01-26","2023-01-27"),
+       lty=c(1,1), lwd=c(2,2),cex=0.75, col=1:10)
+```
+## 4b)
+```{r}
+#Divide coupon rate by 2(semi-annual)
+coupon <- price$coupon_rate * 0.5
+#Create a data frame only storing 10 bonds' price of each date
+bond_value <- data.frame(price[,c(3:13)])
+#Create an empty matrix
+spot_rate <-matrix(ncol = 10, nrow = 10)
+#for loop with i_th date
+for (i in 1:10) {
+  sr <- c()
+  Price <- bond_value[i]
+  #when it is the first bond with 0.5 year to maturity
+  for (j in 1:10) {
+    if (j==1){
+      sr_1 <- -2*log(Price[j,]/(100*coupon[j] + 100))
+      sr[j]=sr_1
+    }
+    #If else, we need to consider the accrued interest
+    else {
+      cpn <- 0
+      for (k in 1:(j-1)) {
+        cpn <- cpn + 100 * coupon[j] * exp(-sr[k]*(0.5*k))
+      }
+      rj <- log((Price[j,]-cpn)/(100*coupon[j] + 100))/((-1/2)*j)
+      sr[j] <- rj
+    }
+  }
+  spot_rate[,i] <- sr
+}
+
+```
+```{r}
+#plot spot curve
+a <- seq(0.5,5,0.5)
+plot(a,spot_rate[,1],type="l", col=1,xlab="Time to Maturity (Years)",ylab="Spot Rate", 
+     main =" 5-Year Spot Curve for 10 Bonds of 10 Days")
+lines(a,spot_rate[,2], col=2)
+lines(a,spot_rate[,3], col=3)
+lines(a,spot_rate[,4], col=4)
+lines(a,spot_rate[,5], col=5)
+lines(a,spot_rate[,6], col=6)
+lines(a,spot_rate[,7], col=7)
+lines(a,spot_rate[,8], col=8)
+lines(a,spot_rate[,9], col=9)
+lines(a,spot_rate[,10], col=10)
+legend("topright",legend = c("2023-01-16", "2023-01-17","2023-01-18","2023-01-19","2023-01-20",
+                                "2023-01-23","2023-01-24","2023-01-25","2023-01-26","2023-01-27"),
+       lty=c(1,1), lwd=c(2,2),cex=0.75, col=1:10)
+
+```
+## 4c)
+
+```{r}
+fr <- matrix(ncol = 10, nrow = 4)
+# create a loop for each date.
+for (i in 1:10) {
+  # refer to the spots rate of i_th date and r1 is r_1 in the formula.
+  sr <- spot_rate[, i]
+  r1 <- sr[2]
+  # create a vector storing forward rate for each bond on the i_th date.
+  f <- c()
+  #we only interest 1yr-1yr,...,1yr-4yr forward rate
+  for (j in 2:5) {
+    forward <- (sr[j*2]*j - r1)/(j - 1)
+    f[j - 1] <- forward
+  }
+
+  fr[,i] <- f
+}
+fr
+
+
+```
+```{r}
+#plot forward curve
+a <-c(1,2,3,4)
+plot(fr[,1],type="l", col=1,ylim = c(0.022,0.029),xlab="Time to Maturity (Years)",ylab="Spot Rate", 
+     main =" Forward curve corresponding to each day of data")
+lines(a,fr[,2], col=2)
+lines(a,fr[,3], col=3)
+lines(a,fr[,4], col=4)
+lines(a,fr[,5], col=5)
+lines(a,fr[,6], col=6)
+lines(a,fr[,7], col=7)
+lines(a,fr[,8], col=8)
+lines(a,fr[,9], col=9)
+lines(a,fr[,10], col=10)
+legend("topright",legend = c("2023-01-16", "2023-01-17","2023-01-18","2023-01-19","2023-01-20",
+                                "2023-01-23","2023-01-24","2023-01-25","2023-01-26","2023-01-27"),
+       lty=c(1,1), lwd=c(2,2),cex=0.75, col=1:10)
+
+```
+## Question 5
+```{r}
+yield <- matrix(ncol = 9, nrow = 5)
+for (i in 1:9){
+  yield[1,i]<-log(ytm1`[2,i+1]/ytm[2,i])
+  yield[2,i]<-log(ytm[4,i+1]/ytm[4,i])
+  yield[3,i]<-log(ytm[6,i+1]/ytm[6,i])
+  yield[4,i]<-log(ytm[8,i+1]/ytm[8,i])
+  yield[5,i]<-log(ytm[10,i+1]/ytm[10,i])
+}
+yield <- t(yield)
+
+covyield = cov(yield)
+covyield
+knitr::kable(covyield)
+
+```
+
+```{r}
+forw <- matrix(ncol = 9, nrow = 4)
+for (i in 1:9){
+  forw[1,i]<-log(fr[1,i+1]/fr[1,i])
+  forw[2,i]<-log(fr[2,i+1]/fr[2,i])
+  forw[3,i]<-log(fr[3,i+1]/fr[3,i])
+  forw[4,i]<-log(fr[4,i+1]/fr[4,i])
+}
+forw <- t(forw)
+
+covforw = cov(forw)
+covforw
+knitr::kable(covforw)
+```
+## Question 6
+```{r}
+y <- eigen(covyield)
+y$values
+y$vectors
+```
+
+
+```{r}
+f <- eigen(covforw)
+f$values
+f$vectors
+```
+
